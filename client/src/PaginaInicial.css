@@ -1,3 +1,14 @@
 .PaginaInicial{
-    
+    background-color: #FAFBFC;
+}
+.PaginaInicial-Navbar{
+    height:100px;
+    border-bottom: 1px solid #E8E9EA;
+}
+.PaginaInicial-Icon{
+    width: 70%;
+}
+
+.PaginaInicial-NavbarCollapse{
+    margin-left: 30%;
 }
