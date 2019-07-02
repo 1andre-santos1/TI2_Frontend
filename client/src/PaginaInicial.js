@@ -24,8 +24,13 @@ class PaginaInicial extends Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.handleCommentSubmission = this.handleCommentSubmission.bind(this);
+        this.handleLike = this.handleLike.bind(this);
     }
     async componentDidMount() {
+        this.fetchPosts();
+    }
+
+    async fetchPosts(){
         let response = await axios.get('https://ipt-ti2-iptgram.azurewebsites.net/api/posts');
 
         let postsArray = response.data;
@@ -136,6 +141,16 @@ class PaginaInicial extends Component {
         //faz um novo pedido pelos comentários do post
         this.showImagePopup(idPost);
     }
+    async handleLike(idPost){
+        let response = await axios.post('https://ipt-ti2-iptgram.azurewebsites.net/api/posts/'+idPost+'/like',null,{
+            withCredentials: true,
+            crossdomain: true,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        this.fetchPosts();
+    }
     render() {
         return (
             <div className="PaginaInicial">
@@ -162,7 +177,7 @@ class PaginaInicial extends Component {
                                 <Image id={p.id} showImagePopup={this.showImagePopup} />,
                                 <h2>{p.user.name}</h2>,
                                 <h3>{p.postedAt.substring(0, p.postedAt.indexOf("T"))}</h3>,
-                                <h4>{p.likes}</h4>,
+                                <button onClick={()=>this.handleLike(p.id)} >{"👍 "+p.likes}</button>,
                                 <h4>{p.comments}</h4>
                             ]);
                         }.bind(this))
