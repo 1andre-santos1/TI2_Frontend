@@ -4,10 +4,27 @@ import './ImagePopup.css'
 class ImagePopup extends Component{
     constructor(props){
         super(props);
+        this.state={
+            commentText: ''
+        }
         this.closePopup = this.closePopup.bind(this);
+        this.handleCommentSubmission = this.handleCommentSubmission.bind(this);
+        this.handleCommentChange = this.handleCommentChange.bind(this);
     }
     closePopup(){
         this.props.closePopup();
+    }
+    handleCommentChange(evt){
+        this.setState({
+            commentText: evt.target.value
+        });
+    }
+    handleCommentSubmission(evt){
+        evt.preventDefault();
+        this.props.handleCommentSubmission(this.state.commentText,this.props.idPost);
+        this.setState({
+            commentText: ''
+        });
     }
     render(){
         return(
@@ -27,6 +44,9 @@ class ImagePopup extends Component{
                         }.bind(this)
                     )
                 }
+                <form onSubmit={this.handleCommentSubmission}>
+                    <input type="text" value={this.state.commentText} onChange={this.handleCommentChange} placeholder="New Comment..."/>
+                </form>
                 <button onClick={this.closePopup}>❌</button>
             </div>
         );
