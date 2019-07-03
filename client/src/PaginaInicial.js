@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Image from './Image'
-import ImagePopup from './ImagePopup';
+import ImagePopup from './ImagePopup'
 import './PaginaInicial.css'
 import logo from './images/icon.png'
-import { Navbar, NavDropdown, Nav, Form, FormControl, Button } from 'react-bootstrap'
+import CarouselImage1 from './images/carousel01.jpg'
+import CarouselImage2 from './images/carousel02.jpg'
+import GreetingImage1 from './images/greeting1.jpg'
+
+import { Navbar, NavDropdown, Nav, Form, FormControl, Button,Carousel,CarouselItem } from 'react-bootstrap'
 
 class PaginaInicial extends Component {
     constructor(props) {
@@ -189,7 +193,7 @@ class PaginaInicial extends Component {
                 <div className="PaginaInicial-Content" >
                     <Navbar bg="light" expand="lg" className="PaginaInicial-Navbar" sticky="top">
                         <Navbar.Brand>
-                            <img src={logo} className="PaginaInicial-Icon"/>
+                            <img src={logo} className="PaginaInicial-Icon" />
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         {
@@ -198,7 +202,7 @@ class PaginaInicial extends Component {
                                 <Navbar.Collapse id="basic-navbar-nav" className="PaginaInicial-NavbarCollapse">
                                     <Nav className="mr-auto">
                                         <Nav.Link onClick={this.handleCreatePost}>
-                                        Create Post
+                                            Create Post
                                     </Nav.Link>
                                     </Nav>
                                     <Form inline className="PaginaInicial-SearchForm" onSubmit={this.searchPost}>
@@ -210,7 +214,7 @@ class PaginaInicial extends Component {
                                 :
                                 <Navbar.Collapse id="basic-navbar-nav" className="PaginaInicial-NavbarCollapse">
                                     <Form inline className="PaginaInicial-LoginForm" onSubmit={this.login}>
-                                        <FormControl type="text" placeholder="Search" className="mr-sm-2" type="text" onChange={this.handleChange} name="usernameText" value={this.state.usernameText} />
+                                        <FormControl type="text" placeholder="Username" className="mr-sm-2" type="text" onChange={this.handleChange} name="usernameText" value={this.state.usernameText} />
                                         <FormControl type="password" placeholder="Password" onChange={this.handleChange} name="passwordText" value={this.state.passwordText} />
                                         <Button variant="outline-success" type="submit">Login</Button>
                                     </Form>
@@ -218,28 +222,58 @@ class PaginaInicial extends Component {
                         }
                     </Navbar>
                     {
-                        this.state.isShowingCreatePostPopup &&
-                        <div className="PaginaInicial-CreatePostPopup">
-                            <form onSubmit={this.handlePostSubmission}>
-                                <label>Your Image</label><input type="file" value={this.state.newPostImage} onChange={this.handleChange} name="newPostImage" />
-                                <label>Your description</label><input type="text" value={this.state.newPostCaption} onChange={this.handleChange} name="newPostCaption" />
-                                <button type="submit">Add Post</button>
-                            </form>
-                        </div>
+                        this.state.isAuthenticated
+                            ?
+                            (
+                                this.state.isShowingCreatePostPopup &&
+                                <div className="PaginaInicial-CreatePostPopup">
+                                    <form onSubmit={this.handlePostSubmission}>
+                                        <label>Your Image</label><input type="file" value={this.state.newPostImage} onChange={this.handleChange} name="newPostImage" />
+                                        <label>Your description</label><input type="text" value={this.state.newPostCaption} onChange={this.handleChange} name="newPostCaption" />
+                                        <button type="submit">Add Post</button>
+                                    </form>
+                                </div> ,
+                                this.state.posts.map(function (p) {
+                                    return ([
+                                        <h1>{p.caption}</h1>,
+                                        <Image id={p.id} showImagePopup={this.showImagePopup} />,
+                                        <h2>{p.user.name}</h2>,
+                                        <h3>{p.postedAt.substring(0, p.postedAt.indexOf("T"))}</h3>,
+                                        <button onClick={() => this.handleLike(p.id)} >{"👍 " + p.likes}</button>,
+                                        <h4>{p.comments}</h4>
+                                    ]);
+                                }.bind(this))
+                            )
+                            :
+                                <div>
+                            <Carousel className="PaginaInicial-Carousel">
+                                <Carousel.Item>
+                                    <img className="d-block w-100 PaginaInicial-CarouselImage" src={CarouselImage1} alt="First slide"/>
+                                    <Carousel.Caption>
+                                        <h3>Welcome to glimpser</h3>
+                                        <p>Live your life by the camera eyes</p>
+                                    </Carousel.Caption>
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <img
+                                        className="d-block w-100 PaginaInicial-CarouselImage"
+                                        src={CarouselImage2}
+                                        alt="Third slide"
+                                    />
+                                    <Carousel.Caption>
+                                        <h3>Second slide label</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    </Carousel.Caption>
+                                </Carousel.Item>
+                            </Carousel>
+                            <div className="PaginaInicial-Greeting">
+                                <img className="PaginaInicial-GreetingImage" src={GreetingImage1} />
+                                <span className="PaginaInicial-GreetingText">
+                                    "With glimpser I can upload my favorite photos anywhere at anytime..."
+                                </span>
+                            </div>
+                            </div>
                     }
-                    {
-                        this.state.posts.map(function (p) {
-                            return ([
-                                <h1>{p.caption}</h1>,
-                                <Image id={p.id} showImagePopup={this.showImagePopup} />,
-                                <h2>{p.user.name}</h2>,
-                                <h3>{p.postedAt.substring(0, p.postedAt.indexOf("T"))}</h3>,
-                                <button onClick={() => this.handleLike(p.id)} >{"👍 " + p.likes}</button>,
-                                <h4>{p.comments}</h4>
-                            ]);
-                        }.bind(this))
-                    }
-
                 </div>
                 {
                     this.state.isShowingImagePopup &&

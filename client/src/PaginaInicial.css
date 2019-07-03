@@ -12,3 +12,32 @@
 .PaginaInicial-NavbarCollapse{
     margin-left: 30%;
 }
+.PaginaInicial-Carousel{
+    width: 100%;
+}
+.PaginaInicial-CarouselImage{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+.PaginaInicial-Greeting{
+    margin-top: 30px;
+    width: 100%;
+    text-align: left;
+    border-radius: 5%;
+    padding: 10px;
+}
+.PaginaInicial-GreetingImage{
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+.PaginaInicial-GreetingText{
+    font-size: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
