@@ -20,6 +20,7 @@ class ImagePopup extends Component{
         });
     }
     handleCommentSubmission(evt){
+        
         evt.preventDefault();
         this.props.handleCommentSubmission(this.state.commentText,this.props.idPost);
         this.setState({

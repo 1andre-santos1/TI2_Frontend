@@ -174,8 +174,6 @@ class PaginaInicial extends Component {
             "Metadata": { "caption": this.state.newPostCaption },
         }
 
-        console.log(obj)
-
         let response = await axios.post('https://ipt-ti2-iptgram.azurewebsites.net/api/posts/', obj, {
             withCredentials: true,
             crossdomain: true,
@@ -184,8 +182,6 @@ class PaginaInicial extends Component {
                 'Content-Type': 'multipart/form-data'
             }
         });
-
-        console.log(response)
     }
     render() {
         return (
@@ -234,6 +230,7 @@ class PaginaInicial extends Component {
                                     </form>
                                 </div> ,
                                 this.state.posts.map(function (p) {
+                                    console.log(p.isLiking)
                                     return ([
                                         <h1>{p.caption}</h1>,
                                         <Image id={p.id} showImagePopup={this.showImagePopup} />,
