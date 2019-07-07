@@ -62,7 +62,10 @@ namespace IPTGram.Controllers
                         UserName = post.User.UserName, 
                         IsCurrentUser = User.Identity.IsAuthenticated 
                     }
-            }).FirstOrDefaultAsync(p => p.Id == id);;
+            }).FirstOrDefaultAsync(p => p.Id == id);
+
+            if(postToShow == null)
+                return NotFound();
 
             return Ok(postToShow);
         }
