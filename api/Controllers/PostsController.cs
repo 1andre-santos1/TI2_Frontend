@@ -9,7 +9,7 @@ using System.IO;
 namespace IPTGram.Controllers
 {
     [Route("api/[controller]")]
-    public class PostsController : Controller
+    public class PostsController : ControllerBase
     {
         private readonly IPTGramDb _context;
         public PostsController(IPTGramDb context)
@@ -19,27 +19,59 @@ namespace IPTGram.Controllers
 
         // GET: api/posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostSimple>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<PostSimple>>> GetPosts(string query)
         {
-            var postsToShow = await _context.Posts
-                .Select(post => new PostSimple()
+            if(!string.IsNullOrEmpty(query))
             {
-                Caption = post.Caption, 
-                Id = post.Id, 
-                Comments = post.Comments.Count, 
-                IsLiking = false, 
-                Likes = post.Likes.Count, 
-                PostedAt = post.PostedAt, 
-                User = new UserSimple()
+                var postsToShow = await _context.Posts
+                    .Where(post => post.Caption.ToLowerInvariant().Contains(query.ToLowerInvariant()))
+                    .Select(post => new PostSimple()
                 {
-                    Id = post.User.Id, 
-                    Name = post.User.Name,
-                    UserName = post.User.UserName, 
-                    IsCurrentUser = User.Identity.IsAuthenticated 
-                }
-            }).ToListAsync();
+                    Caption = post.Caption, 
+                    Id = post.Id, 
+                    Comments = post.Comments.Count, 
+                    IsLiking = false, 
+                    Likes = post.Likes.Count, 
+                    PostedAt = post.PostedAt, 
+                    User = new UserSimple()
+                    {
+                        Id = post.User.Id, 
+                        Name = post.User.Name,
+                        UserName = post.User.UserName, 
+                        IsCurrentUser = User.Identity.IsAuthenticated 
+                    }
+                }).ToListAsync();
 
-            return Ok(postsToShow);
+                if(postsToShow == null)
+                    return NotFound();
+
+                return Ok(postsToShow);
+            }
+            else
+            {
+                var postsToShow = await _context.Posts
+                .Select(post => new PostSimple()
+                {
+                    Caption = post.Caption, 
+                    Id = post.Id, 
+                    Comments = post.Comments.Count, 
+                    IsLiking = false, 
+                    Likes = post.Likes.Count, 
+                    PostedAt = post.PostedAt, 
+                    User = new UserSimple()
+                    {
+                        Id = post.User.Id, 
+                        Name = post.User.Name,
+                        UserName = post.User.UserName, 
+                        IsCurrentUser = User.Identity.IsAuthenticated 
+                    }
+                }).ToListAsync();
+
+                if(postsToShow == null)
+                    return NotFound();
+
+                return Ok(postsToShow);
+            }
         }
 
         // GET: api/posts/{id}

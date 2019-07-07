@@ -100,7 +100,7 @@ class PaginaInicial extends Component {
     }
     async searchPost(e) {
         e.preventDefault();
-        let response = await axios.get('https://ipt-ti2-iptgram.azurewebsites.net/api/posts?query=' + this.state.searchText);
+        let response = await axios.get('http://localhost:5000/api/posts?query=' + this.state.searchText);
 
         let postsArray = response.data;
 
