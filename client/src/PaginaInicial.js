@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Image from './Image'
 import ImagePopup from './ImagePopup'
+import Post from './Post'
 import './PaginaInicial.css'
 import logo from './images/icon.png'
+import logoWithoutText from './images/logo.png'
 import CarouselImage1 from './images/carousel01.jpg'
 import CarouselImage2 from './images/carousel02.jpg'
 import GreetingImage1 from './images/greeting1.jpg'
@@ -38,9 +39,28 @@ class PaginaInicial extends Component {
         this.handlePostSubmission = this.handlePostSubmission.bind(this);
     }
     async componentDidMount() {
+        window.addEventListener("scroll", this.resizeNavbarOnScroll);
         this.fetchPosts();
-    }
 
+    }
+    resizeNavbarOnScroll() {
+        const distanceY = window.pageYOffset || document.documentElement.scrollTop,
+          shrinkOn = 200,
+          navbarEl = document.getElementsByClassName("PaginaInicial-Navbar")[0],
+          navbarImage = document.getElementsByClassName("PaginaInicial-Icon")[0];
+    
+        if (distanceY > shrinkOn) {
+          navbarEl.classList.add("smallerNavbar");
+          navbarEl.classList.remove("biggerNavbar");
+          navbarImage.src=logoWithoutText;
+          navbarImage.classList.add("smallerIcon");
+        } else {
+          navbarEl.classList.remove("smallerNavbar");
+          navbarEl.classList.add("biggerNavbar");
+          navbarImage.src=logo;
+          navbarImage.classList.remove("smallerIcon");
+        }
+      }
     async fetchPosts() {
         let response = await axios.get('http://localhost:5000/api/posts/');
 
@@ -229,17 +249,18 @@ class PaginaInicial extends Component {
                                         <button type="submit">Add Post</button>
                                     </form>
                                 </div> ,
-                                this.state.posts.map(function (p) {
-                                    console.log(p.isLiking)
-                                    return ([
-                                        <h1>{p.caption}</h1>,
-                                        <Image id={p.id} showImagePopup={this.showImagePopup} />,
-                                        <h2>{p.user.name}</h2>,
-                                        <h3>{p.postedAt.substring(0, p.postedAt.indexOf("T"))}</h3>,
-                                        <button onClick={() => this.handleLike(p.id)} >{"👍 " + p.likes}</button>,
-                                        <h4>{p.comments}</h4>
-                                    ]);
-                                }.bind(this))
+                                this.state.posts.map(p =>
+                                     <Post 
+                                        caption={p.caption}
+                                        id={p.id}
+                                        showImagePopup={this.showImagePopup}
+                                        username={p.user.name}
+                                        date={p.postedAt.substring(0, p.postedAt.indexOf("T"))}
+                                        handleLike={this.handleLike}
+                                        likes={p.likes}
+                                        comments={p.comments}
+                                     />
+                                )
                             )
                             :
                                 <div>

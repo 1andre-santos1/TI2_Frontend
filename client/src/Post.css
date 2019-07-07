@@ -1,0 +1,41 @@
+.Post{
+    margin: 20px auto;
+    width: 45%;
+    box-shadow: 2px 5px 8px #888888;
+}
+.Post-Footer{
+    background-color: #ffffff;
+    min-height: 70px;
+    padding: 16px;
+    width: 100%;
+    margin: 0 auto;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 2px 5px 8px #888888;
+}
+.Post-Image{
+    width: 100%;
+    height: 614px;
+    object-fit: cover;
+}
+.Post-Like-Btn,.Post-Comments-Number{
+    cursor: pointer;
+    float: right;
+    margin: 10px;
+}
+.Post-Caption{
+    float: left;
+    display: block;
+    width:80%;
+    text-align: left;
+    color: #212124;
+    font-weight: 600;
+}
+.Post-Username{
+    float: left;
+    display: block;
+    color: #b3b3b3;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
