@@ -80,5 +80,30 @@ namespace IPTGram.Controllers
                 
             return PhysicalFile(Path.GetFullPath(Path.Combine("images", post.ImageFileName)), post.ImageContentType);
         }
+        //GET: api/posts/{id}/comments
+        [HttpGet("{id}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentSimple>>> GetPostComments(long id)
+        {
+            var comments = await _context.Comments
+                .Where(comment => comment.PostId == id)
+                .Select(comment => new CommentSimple(){
+                    Id = comment.Id,
+                    Text = comment.Text,
+                    PostedAt = comment.PostedAt,
+                    User = new UserSimple()
+                    {
+                        Id = comment.UserId,
+                        Name = comment.User.Name,
+                        UserName = comment.User.UserName,
+                        IsCurrentUser = User.Identity.IsAuthenticated
+                    },
+                    PostId = id
+            }).ToListAsync();
+
+            if(comments == null)
+                return NotFound();
+
+            return comments;
+        }
     }
 }
