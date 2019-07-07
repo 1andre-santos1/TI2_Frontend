@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace IPTGram
 {
@@ -86,6 +87,11 @@ namespace IPTGram
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddMvc()
+        .AddJsonOptions(
+            options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
+
             // Configurar a classe AppOptions com os dados do ficheiro de configurações
             // (Usar com IOptions<AppOptions> nos parâmetros dos Controllers).
             services.Configure<AppOptions>(config.GetSection("IPTGram"));
@@ -99,6 +105,7 @@ namespace IPTGram
                     provider.GetRequiredService<ILogger<DbInitializer>>()
                 );
             });
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -139,6 +146,7 @@ namespace IPTGram
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }

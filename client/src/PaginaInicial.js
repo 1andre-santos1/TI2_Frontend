@@ -42,7 +42,7 @@ class PaginaInicial extends Component {
     }
 
     async fetchPosts() {
-        let response = await axios.get('https://ipt-ti2-iptgram.azurewebsites.net/api/posts');
+        let response = await axios.get('http://localhost:5000/api/posts/');
 
         let postsArray = response.data;
 
@@ -53,7 +53,7 @@ class PaginaInicial extends Component {
 
     async showImagePopup(id) {
 
-        let response = await axios.get('https://ipt-ti2-iptgram.azurewebsites.net/api/posts/' + id);
+        let response = await axios.get('http://localhost:5000/api/posts/' + id);
 
         let obj = {
             idPost: id,
