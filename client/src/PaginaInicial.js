@@ -269,7 +269,7 @@ class PaginaInicial extends Component {
                                     <img className="d-block w-100 PaginaInicial-CarouselImage" src={CarouselImage1} alt="First slide"/>
                                     <Carousel.Caption>
                                         <h3>Welcome to glimpser</h3>
-                                        <p>Live your life by the camera eyes</p>
+                                        <p>Live a life full of images with glimpser</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
                                 <Carousel.Item>
@@ -279,8 +279,8 @@ class PaginaInicial extends Component {
                                         alt="Third slide"
                                     />
                                     <Carousel.Caption>
-                                        <h3>Second slide label</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        <h3>Quote of the day</h3>
+                                        <p>Photography is a love affair with life</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
                             </Carousel>
