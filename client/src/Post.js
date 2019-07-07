@@ -17,7 +17,7 @@ class Post extends Component {
         return (
             <div className="Post">
                 <div className="Post-Body">
-                    <img className="Post-Image" src={"https://ipt-ti2-iptgram.azurewebsites.net/api/posts/"+this.props.id+"/image"} onClick={this.showImagePopup}/>
+                    <img className="Post-Image" src={"http://localhost:5000/api/posts/"+this.props.id+"/image"} onClick={this.showImagePopup}/>
                 </div>
                 <div className="Post-Footer">
                     <span className="Post-Caption">{this.props.caption}</span>
