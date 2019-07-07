@@ -77,14 +77,14 @@ class PaginaInicial extends Component {
 
         let obj = {
             idPost: id,
-            image: "https://ipt-ti2-iptgram.azurewebsites.net/api/posts/" + id + "/image",
+            image: "http://localhost:5000/api/posts/" + id + "/image",
             user: response.data.user.name,
             date: response.data.postedAt,
             label: response.data.caption,
             likes: response.data.likes
         };
 
-        let commentsResponse = await axios.get('https://ipt-ti2-iptgram.azurewebsites.net/api/posts/' + id + '/comments');
+        let commentsResponse = await axios.get('http://localhost:5000/api/posts/' + id + '/comments');
 
         obj.comments = commentsResponse.data;
 
