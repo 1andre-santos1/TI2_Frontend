@@ -4,6 +4,7 @@ using IPTGram.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.IO;
 
 namespace IPTGram.Controllers
 {
@@ -41,7 +42,7 @@ namespace IPTGram.Controllers
             return Ok(postsToShow);
         }
 
-        // GET: api/posts/5
+        // GET: api/posts/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<PostSimple>> GetPost(long id)
         {
@@ -64,6 +65,17 @@ namespace IPTGram.Controllers
             }).FirstOrDefaultAsync(p => p.Id == id);;
 
             return Ok(postToShow);
+        }
+        //GET: api/posts/{id}/image
+        [HttpGet("{id}/image")]
+        public async Task<ActionResult> GetPostImage(long id)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+
+            if(post == null)
+                return NotFound();
+                
+            return PhysicalFile(Path.GetFullPath(Path.Combine("images", post.ImageFileName)), post.ImageContentType);
         }
     }
 }

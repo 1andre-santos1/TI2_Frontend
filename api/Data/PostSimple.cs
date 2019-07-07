@@ -14,8 +14,13 @@ namespace IPTGram.Data
         public DateTimeOffset PostedAt { get; set; }
 
         public UserSimple User {get;set;}
+
         public int Likes {get;set;}
+
         public Boolean IsLiking {get;set;}
+
         public int Comments {get;set;}
+        
+        public string ImageFileName { get; set; }
     }
 }
