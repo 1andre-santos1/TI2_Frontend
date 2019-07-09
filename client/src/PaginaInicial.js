@@ -16,16 +16,16 @@ class PaginaInicial extends Component {
         super(props);
 
         this.state = {
-            posts: [],
-            isShowingImagePopup: false,
-            showcaseImage: {},
-            searchText: '',
-            usernameText: '',
-            passwordText: '',
-            isAuthenticated: false,
-            isShowingCreatePostPopup: false,
-            newPostImage: null,
-            newPostCaption: ''
+            posts: [], //lista de posts a mostrar na página
+            isShowingImagePopup: false, //está a mostrar o popup?
+            showcaseImage: {}, //objeto que contém info da imagem que aparece no popup
+            searchText: '', //texto do input de pesquisa
+            usernameText: '', //texto do input username
+            passwordText: '', //texto do input password
+            isAuthenticated: false, //o utilizador está autenticado?
+            isShowingCreatePostPopup: false, //o popup de criar um post está a ser mostrado?
+            newPostImage: null, //imagem do novo post
+            newPostCaption: '' //descrição do novo post
         }
         this.showImagePopup = this.showImagePopup.bind(this);
         this.closePopup = this.closePopup.bind(this);
@@ -38,11 +38,15 @@ class PaginaInicial extends Component {
         this.handleCreatePost = this.handleCreatePost.bind(this);
         this.handlePostSubmission = this.handlePostSubmission.bind(this);
     }
+    //ao iniciar este component
     async componentDidMount() {
+        //inicia o evento de "animação" da navbar
         window.addEventListener("scroll", this.resizeNavbarOnScroll);
-        this.fetchPosts();
 
+        //faz fetch de todos os posts a mostrar
+        this.fetchPosts();
     }
+    //função de resize da navbar
     resizeNavbarOnScroll() {
         const distanceY = window.pageYOffset || document.documentElement.scrollTop,
           shrinkOn = 200,
@@ -61,20 +65,27 @@ class PaginaInicial extends Component {
           navbarImage.classList.remove("smallerIcon");
         }
       }
+    //função de fetch de todos os posts
     async fetchPosts() {
+        //faz um get à API por todos os posts
         let response = await axios.get('http://localhost:5000/api/posts/');
 
+        //cria um array que conterá a lista de posts
         let postsArray = response.data;
 
+        //muda o estado posts para este array
         this.setState({
             posts: postsArray
         });
     }
 
+    //função que mostra o popup tendo o id do post
     async showImagePopup(id) {
 
+        //faz um get à API pelo post
         let response = await axios.get('http://localhost:5000/api/posts/' + id);
 
+        //cria um novo objeto a mostrar no popup, com a informação do GET
         let obj = {
             idPost: id,
             image: "http://localhost:5000/api/posts/" + id + "/image",
@@ -84,24 +95,32 @@ class PaginaInicial extends Component {
             likes: response.data.likes
         };
 
+        //vai buscar todos os comentários do post à API
         let commentsResponse = await axios.get('http://localhost:5000/api/posts/' + id + '/comments');
 
+        //atribui ao objeto do popup um atributo comments que contém a lista de comentários
         obj.comments = commentsResponse.data;
 
+        //muda o estado do objeto imagem a mostrar (showcaseImage) para obj e mostra o popup
         this.setState({
             showcaseImage: obj,
             isShowingImagePopup: true
         })
     }
+    //função que fecha o popup mudando o estado da variável respetiva
     closePopup() {
         this.setState({
             isShowingImagePopup: false
         });
     }
+    //função que pesquisa por um post especifica (tendo em conta uma query)
     async searchPost(e) {
+        //evita o evento de refresh na página
         e.preventDefault();
-        let response = await axios.get('http://localhost:5000/api/posts?query=' + this.state.searchText);
 
+        //faz query por um post tendo em conta o texto do estado de pesquisa
+        let response = await axios.get('http://localhost:5000/api/posts?query=' + this.state.searchText);
+        
         let postsArray = response.data;
 
         this.setState({
