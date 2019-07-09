@@ -22,7 +22,7 @@ class Post extends Component {
                 <div className="Post-Footer">
                     <span className="Post-Caption">{this.props.caption}</span>
                     <span className="Post-Like-Btn" onClick={() => this.handleLike(this.props.id)}>🔥 {this.props.likes}</span>
-                    <span className="Post-Comments-Number">💬 {this.props.comments}</span>
+                    <span className="Post-Comments-Number" onClick={this.showImagePopup}>💬 {this.props.comments}</span>
                     <span className="Post-Username">by {this.props.username}</span>
                     <span className="Post-Date">{this.props.date}</span>
                 </div>
